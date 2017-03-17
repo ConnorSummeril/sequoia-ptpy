@@ -5,6 +5,7 @@ from .extensions.microsoft import PTPDevice as mtp
 from .extensions.parrot import PTPDevice as parrot
 from .ptp import PTPDevice, PTPError
 from .transports.usb import USBTransport as usb
+from .transports.ip import IPTransport as ip
 
 import os
 import coloredlogs
@@ -69,7 +70,7 @@ class PTPy(object):
         if extension is None and not raw:
             plain = ptpy_factory(transport)
             try:
-                plain_camera = plain()
+                plain_camera = plain(device=device)
             except PTPError:
                 plain_camera = None
 
@@ -93,7 +94,7 @@ class PTPy(object):
             )
         # Query the device for information on all its properties and update
         # when there are changes.
-        instance = PTPy(device)
+        instance = PTPy(device=device)
         if knowledge and not raw:
             instance._obtain_the_knowledge()
 
